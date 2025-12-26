@@ -119,6 +119,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--foreground-muted);
+  padding: 0 var(--spacing-md);
 }
 
 .content {

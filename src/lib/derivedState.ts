@@ -82,6 +82,12 @@ export function buildStationCardViewModel(
         isMoney,
       });
     }
+    // Sort: money items first, then alphabetically by name
+    requirements.sort((a, b) => {
+      if (a.isMoney && !b.isMoney) return -1;
+      if (!a.isMoney && b.isMoney) return 1;
+      return a.itemName.localeCompare(b.itemName);
+    });
   } else {
     // At max level, no requirements
     isReadyToUpgrade = false;

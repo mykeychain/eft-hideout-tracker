@@ -71,6 +71,9 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
           )}
         </div>
         <div className={styles.levelControl} onClick={(e) => e.stopPropagation()}>
+          <span className={styles.level}>
+            {station.currentLevel === 0 ? 'Not Built' : `Level ${station.currentLevel}`}
+          </span>
           <button
             className={styles.levelBtn}
             onClick={() => handleLevelChange(-1)}
@@ -79,9 +82,6 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
           >
             −
           </button>
-          <span className={styles.level}>
-            {station.currentLevel}/{maxLevel}
-          </span>
           <button
             className={styles.levelBtn}
             onClick={() => handleLevelChange(1)}
