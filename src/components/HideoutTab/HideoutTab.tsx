@@ -17,7 +17,7 @@ export function HideoutTab() {
     <div className={styles.container}>
       <div className={styles.toolbar}>
         <button className={styles.resetBtn} onClick={handleReset}>
-          Reset Levels
+          Reset Hideout
         </button>
       </div>
       <StationList />
