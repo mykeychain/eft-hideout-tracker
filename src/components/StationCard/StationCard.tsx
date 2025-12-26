@@ -44,9 +44,17 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
     <div
       className={`${styles.card} ${station.isReadyToUpgrade ? styles.ready : ''}`}
     >
-      <button
+      <div
         className={styles.header}
         onClick={() => setIsExpanded(!isExpanded)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsExpanded(!isExpanded);
+          }
+        }}
+        role="button"
+        tabIndex={0}
         aria-expanded={isExpanded}
       >
         <div className={styles.headerLeft}>
@@ -83,7 +91,7 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
             +
           </button>
         </div>
-      </button>
+      </div>
 
       {isExpanded && (
         <div className={styles.content}>
