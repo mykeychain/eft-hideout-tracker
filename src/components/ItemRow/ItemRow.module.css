@@ -1,0 +1,158 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  transition: all 0.15s ease;
+}
+
+.row.complete {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background: var(--background-tertiary);
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.infoLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fullName {
+  display: inline;
+}
+
+.shortName {
+  display: none;
+}
+
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  background: var(--background-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.15s ease, background-color 0.15s ease;
+}
+
+.infoRight {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.progressText {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--foreground-muted);
+  min-width: 4em;
+  text-align: right;
+}
+
+.row.complete .progressText {
+  color: var(--success);
+}
+
+.controls {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.controlBtn {
+  min-width: 36px;
+  height: 32px;
+  padding: 0 var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-tertiary);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.controlBtn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.controlBtn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.controlBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .info {
+    flex: 1 1 calc(100% - 56px);
+  }
+
+  .controls {
+    justify-content: flex-end;
+    margin-top: var(--spacing-xs);
+  }
+
+  .fullName {
+    display: none;
+  }
+
+  .shortName {
+    display: inline;
+  }
+}

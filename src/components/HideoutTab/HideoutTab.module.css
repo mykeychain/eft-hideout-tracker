@@ -1,0 +1,27 @@
+.container {
+  min-height: 200px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: var(--spacing-sm) 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.resetBtn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--background-tertiary);
+  border: 1px solid var(--border);
+  color: var(--foreground-muted);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.resetBtn:hover {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+}
