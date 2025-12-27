@@ -106,8 +106,8 @@
 }
 
 .levelBtn {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,14 +172,15 @@
   font-weight: 600;
   color: var(--foreground);
   background: var(--background-tertiary);
-  padding: 2px 8px;
+  padding: 0 8px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   min-width: 7em;
   height: 32px;
   text-align: center;
-  line-height: 27px;
+  line-height: 30px;
+  box-sizing: border-box;
 }
 
 .levelBadge.notBuilt {
@@ -331,11 +332,6 @@
 
   .name {
     font-size: var(--font-size-md);
-  }
-
-  .levelBtn {
-    width: 32px;
-    height: 32px;
   }
 
   .content {
