@@ -112,9 +112,9 @@ export const ItemRow = memo(function ItemRow({ item }: ItemRowProps) {
       </div>
       {isExpanded && (
         <div className={styles.expandedContent}>
-          <div className={styles.stationList}>
+          <ul className={styles.stationList}>
             {item.stationSources.map((source) => (
-              <div key={source.stationId} className={styles.stationSource}>
+              <li key={source.stationId} className={styles.stationSource}>
                 <img
                   src={source.imageLink}
                   alt=""
@@ -126,9 +126,9 @@ export const ItemRow = memo(function ItemRow({ item }: ItemRowProps) {
                   Lv {source.currentLevel} → {source.targetLevel}
                 </span>
                 <span className={styles.stationQty}>× {source.quantity}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
     </div>
