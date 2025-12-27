@@ -113,13 +113,29 @@
   cursor: not-allowed;
 }
 
-.level {
-  min-width: 40px;
+.levelBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--background-tertiary);
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  min-width: 7em;
+  height: 28px;
   text-align: center;
-  font-size: 0.875rem;
-  font-weight: 500;
+  line-height: 23px;
+}
+
+.levelBadge.notBuilt {
   color: var(--foreground-muted);
-  padding: 0 var(--spacing-md);
+}
+
+.levelBadge.maxLevel {
+  color: var(--success);
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid var(--success);
 }
 
 .content {
@@ -130,9 +146,6 @@
 .maxLevel,
 .noRequirements {
   color: var(--foreground-muted);
-  font-size: 0.875rem;
-  text-align: center;
-  padding: var(--spacing-sm) 0;
 }
 
 .requirements {

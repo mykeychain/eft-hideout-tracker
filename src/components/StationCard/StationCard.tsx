@@ -71,8 +71,18 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
           )}
         </div>
         <div className={styles.levelControl} onClick={(e) => e.stopPropagation()}>
-          <span className={styles.level}>
-            {station.currentLevel === 0 ? 'Not Built' : `Level ${station.currentLevel}`}
+          <span className={`${styles.levelBadge} ${
+            station.currentLevel === 0
+              ? styles.notBuilt
+              : isAtMax
+                ? styles.maxLevel
+                : ''
+          }`}>
+            {station.currentLevel === 0
+              ? 'Not Built'
+              : isAtMax
+                ? 'Max Level'
+                : `Level ${station.currentLevel}`}
           </span>
           <button
             className={styles.levelBtn}
