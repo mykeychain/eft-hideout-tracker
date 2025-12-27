@@ -16,14 +16,6 @@
   background: var(--background-secondary);
 }
 
-.card.excluded .header {
-  cursor: default;
-}
-
-.card.excluded .header:hover {
-  background: transparent;
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -42,6 +34,14 @@
   background: var(--background-tertiary);
 }
 
+.header.notExpandable {
+  cursor: default;
+}
+
+.header.notExpandable:hover {
+  background: transparent;
+}
+
 .headerLeft {
   display: flex;
   align-items: center;
@@ -56,6 +56,10 @@
   flex-shrink: 0;
   text-align: center;
   transition: transform var(--transition-normal);
+}
+
+.expandIcon.hidden {
+  visibility: hidden;
 }
 
 .stationIcon {

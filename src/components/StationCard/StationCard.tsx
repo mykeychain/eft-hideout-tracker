@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, useEffect, memo } from 'react';
 import { useSnapshot } from '@/contexts/SnapshotContext';
 import { useUserState } from '@/contexts/UserStateContext';
 import type { StationCardViewModel, StationRequirementViewModel } from '@/types';
@@ -48,9 +48,17 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
     upgradeStation(station.stationId, maxLevel, itemsToConsume);
   }, [station, maxLevel, upgradeStation]);
 
+  const canExpand = !station.isExcluded && !isAtMax;
+
+  // Auto-collapse when station becomes non-expandable (e.g., reaches max level)
+  useEffect(() => {
+    if (!canExpand && isExpanded) {
+      setIsExpanded(false);
+    }
+  }, [canExpand, isExpanded]);
+
   const handleHeaderClick = () => {
-    // Don't allow expanding if excluded
-    if (!station.isExcluded) {
+    if (canExpand) {
       setIsExpanded(!isExpanded);
     }
   };
@@ -58,7 +66,7 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
   const handleHeaderKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!station.isExcluded) {
+      if (canExpand) {
         setIsExpanded(!isExpanded);
       }
     }
@@ -69,17 +77,17 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
       className={`${styles.card} ${station.isReadyToUpgrade && !station.isExcluded ? styles.ready : ''} ${station.isExcluded ? styles.excluded : ''}`}
     >
       <div
-        className={styles.header}
+        className={`${styles.header} ${!canExpand ? styles.notExpandable : ''}`}
         onClick={handleHeaderClick}
         onKeyDown={handleHeaderKeyDown}
         role="button"
         tabIndex={0}
-        aria-expanded={station.isExcluded ? undefined : isExpanded}
+        aria-expanded={canExpand ? isExpanded : undefined}
       >
         <div className={styles.headerLeft}>
-          {!station.isExcluded && (
-            <span className={styles.expandIcon}>{isExpanded ? '▼' : '▶'}</span>
-          )}
+          <span className={`${styles.expandIcon} ${!canExpand ? styles.hidden : ''}`}>
+            {isExpanded ? '▼' : '▶'}
+          </span>
           <img
             src={station.imageLink}
             alt=""
