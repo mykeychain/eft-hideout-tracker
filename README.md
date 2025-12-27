@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hideout Tracker
+
+A web app for tracking items needed for Escape from Tarkov hideout upgrades.
+
+## Features
+
+- **Hideout Tab**: View all hideout stations with their current levels and upgrade requirements
+- **Items Tab**: Aggregated shopping list of all items needed across stations
+- **Progress Tracking**: Track on-hand quantities for each item with +/- controls
+- **Station Exclusion**: Exclude stations you don't plan to upgrade
+- **Persistent Storage**: All progress saved locally via IndexedDB
+- **Responsive Design**: Works on desktop and mobile
+
+## Tech Stack
+
+- **Next.js 16** with App Router
+- **React 19** with TypeScript
+- **IndexedDB** (via idb) for client-side persistence
+- **CSS Modules** for styling
+- **tarkov.dev GraphQL API** for hideout data
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Run production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to use the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Data Fetching**: On load, the app fetches hideout station data from the tarkov.dev GraphQL API
+2. **User State**: Your station levels and item quantities are stored in IndexedDB
+3. **Derived State**: The app computes which items you need based on your current station levels
+4. **Persistence**: Changes are debounced and saved automatically, with flush on page hide
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # Next.js app router
+│   ├── api/               # API routes (hideout-snapshot)
+│   ├── globals.css        # Global styles and CSS variables
+│   └── layout.tsx         # Root layout
+├── components/            # React components
+│   ├── App/              # Main app with loading states
+│   ├── AppShell/         # Layout with tabs
+│   ├── HideoutTab/       # Station list view
+│   ├── ItemsTab/         # Shopping list view
+│   ├── StationCard/      # Individual station display
+│   └── ItemRow/          # Individual item display
+├── contexts/             # React contexts
+│   ├── SnapshotContext   # Hideout data from API
+│   └── UserStateContext  # User's progress state
+├── hooks/                # Custom React hooks
+├── lib/                  # Utilities
+│   ├── db.ts            # IndexedDB operations
+│   ├── derivedState.ts  # State computation
+│   └── tarkovApi.ts     # GraphQL client
+└── types/               # TypeScript types
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `TARKOV_API_URL` | `https://api.tarkov.dev/graphql` | GraphQL endpoint for hideout data |
 
-## Deploy on Vercel
+## Attribution
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Hideout data is provided by the [tarkov.dev API](https://tarkov.dev), a community-driven resource for Escape from Tarkov data.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or connected to Battlestate Games or Escape from Tarkov. All game-related content and imagery belong to their respective owners.
+
+## AI Disclosure
+
+This project was built with the assistance of AI tools, specifically Claude (Anthropic). AI was used for code generation, architecture decisions, debugging, and documentation throughout development.

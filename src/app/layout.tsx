@@ -8,8 +8,11 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "Tarkov Hideout Tracker",
+  title: "Hideout Tracker",
   description: "Track items needed for your next Hideout upgrades",
+  icons: {
+    icon: "/hideout_favicon.svg",
+  },
 };
 
 export default function RootLayout({

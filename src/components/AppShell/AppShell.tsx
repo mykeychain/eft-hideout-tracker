@@ -61,6 +61,14 @@ export function AppShell({ hideoutContent, itemsContent }: AppShellProps) {
           itemsContent
         )}
       </main>
+      <footer className={styles.footer}>
+        <p>Not affiliated with Battlestate Games</p>
+        <p>
+          Data from <a href="https://tarkov.dev" target="_blank" rel="noopener noreferrer">tarkov.dev</a>
+          {' · '}
+          <a href="https://github.com/mykeychain/eft-hideout-tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </p>
+      </footer>
     </div>
   );
 }

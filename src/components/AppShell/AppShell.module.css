@@ -72,6 +72,28 @@
   color: var(--foreground-muted);
 }
 
+.footer {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--foreground-muted);
+}
+
+.footer p {
+  margin: var(--spacing-xs) 0;
+}
+
+.footer a {
+  color: var(--foreground-muted);
+  text-decoration: underline;
+  transition: color var(--transition-normal);
+}
+
+.footer a:hover {
+  color: var(--foreground);
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .header {
