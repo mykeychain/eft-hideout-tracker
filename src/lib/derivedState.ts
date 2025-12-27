@@ -110,7 +110,8 @@ export function buildStationCardViewModel(
 }
 
 /**
- * Build all StationCardViewModels sorted alphabetically
+ * Build all StationCardViewModels sorted by status then alphabetically
+ * Active stations (not excluded, not at max) first, then inactive stations
  */
 export function buildAllStationCards(
   snapshot: HideoutSnapshot,
@@ -124,8 +125,19 @@ export function buildAllStationCards(
     return buildStationCardViewModel(station, currentLevel, onHandByItemId, isExcluded);
   });
 
-  // Sort alphabetically by station name
-  return cards.sort((a, b) => a.stationName.localeCompare(b.stationName));
+  // Sort: active stations first (alphabetically), then inactive stations (alphabetically)
+  return cards.sort((a, b) => {
+    const aInactive = a.isExcluded || a.currentLevel === a.maxLevel;
+    const bInactive = b.isExcluded || b.currentLevel === b.maxLevel;
+
+    // Active stations first
+    if (aInactive !== bInactive) {
+      return aInactive ? 1 : -1;
+    }
+
+    // Within same group, sort alphabetically
+    return a.stationName.localeCompare(b.stationName);
+  });
 }
 
 // ============================================
