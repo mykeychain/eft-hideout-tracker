@@ -86,7 +86,7 @@ export const StationCard = memo(function StationCard({ station }: StationCardPro
       >
         <div className={styles.headerLeft}>
           <span className={`${styles.expandIcon} ${!canExpand ? styles.hidden : ''}`}>
-            {isExpanded ? '▼' : '▶'}
+            {isExpanded ? '▼' : '▶\uFE0E'}
           </span>
           <img
             src={station.imageLink}
