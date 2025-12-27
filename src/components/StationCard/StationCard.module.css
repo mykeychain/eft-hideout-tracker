@@ -155,7 +155,7 @@
   background: transparent;
   border: 1px solid var(--success);
   color: var(--success);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -168,7 +168,7 @@
 }
 
 .levelBadge {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: 600;
   color: var(--foreground);
   background: var(--background-tertiary);
@@ -233,7 +233,7 @@
 
 .itemName {
   flex: 1;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
