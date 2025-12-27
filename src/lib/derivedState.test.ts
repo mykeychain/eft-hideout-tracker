@@ -358,6 +358,7 @@ describe('computeDerivedState', () => {
       mockSnapshot,
       stationLevels,
       onHand,
+      {},
       'needed-desc'
     );
 
@@ -367,9 +368,36 @@ describe('computeDerivedState', () => {
   });
 
   it('sorts station cards alphabetically', () => {
-    const result = computeDerivedState(mockSnapshot, {}, {}, 'needed-desc');
+    const result = computeDerivedState(mockSnapshot, {}, {}, {}, 'needed-desc');
 
     expect(result.stationCards[0].stationName).toBe('Generator');
     expect(result.stationCards[1].stationName).toBe('Workbench');
+  });
+
+  it('excludes stations from item aggregation when excluded', () => {
+    const stationLevels = { 'station-1': 0, 'station-2': 0 };
+    const excludedStations = { 'station-1': true };
+
+    const resultWithExcluded = computeDerivedState(
+      mockSnapshot,
+      stationLevels,
+      {},
+      excludedStations,
+      'needed-desc'
+    );
+
+    const resultWithoutExcluded = computeDerivedState(
+      mockSnapshot,
+      stationLevels,
+      {},
+      {},
+      'needed-desc'
+    );
+
+    // Excluded station's requirements should not be in the item list
+    expect(resultWithExcluded.itemRows.length).toBeLessThan(resultWithoutExcluded.itemRows.length);
+    // The excluded station should still appear in station cards but marked as excluded
+    const excludedCard = resultWithExcluded.stationCards.find(c => c.stationId === 'station-1');
+    expect(excludedCard?.isExcluded).toBe(true);
   });
 });

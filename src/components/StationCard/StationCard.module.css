@@ -10,6 +10,20 @@
   background: var(--success-bg);
 }
 
+.card.excluded {
+  opacity: 0.5;
+  border-color: var(--border);
+  background: var(--background-secondary);
+}
+
+.card.excluded .header {
+  cursor: default;
+}
+
+.card.excluded .header:hover {
+  background: transparent;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -111,6 +125,42 @@
 .levelBtn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.excludeBtn {
+  width: 100%;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: transparent;
+  border: 1px solid var(--error, #ef4444);
+  color: var(--error, #ef4444);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.excludeBtn:hover {
+  background: var(--error, #ef4444);
+  border-color: var(--error, #ef4444);
+  color: white;
+}
+
+.includeBtn {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid var(--success);
+  color: var(--success);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.includeBtn:hover {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
 }
 
 .levelBadge {

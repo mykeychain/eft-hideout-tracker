@@ -8,7 +8,7 @@ import {
   useCallback,
   type ReactNode,
 } from 'react';
-import type { OnHandByItemId, StationLevelByStationId } from '@/types';
+import type { OnHandByItemId, StationLevelByStationId, ExcludedStationIds } from '@/types';
 import {
   saveOnHandQuantity,
   saveStationLevel,
@@ -18,11 +18,14 @@ import {
   clampStationLevel,
   clearOnHandQuantities,
   clearStationLevels,
+  saveExcludedStation,
+  clearExcludedStations,
 } from '@/lib/db';
 
 interface UserStateContextValue {
   onHandByItemId: OnHandByItemId;
   stationLevelByStationId: StationLevelByStationId;
+  excludedStationIds: ExcludedStationIds;
   isHydrated: boolean;
 
   // Actions
@@ -34,6 +37,7 @@ interface UserStateContextValue {
     maxLevel: number,
     itemsToConsume: Array<{ itemId: string; quantity: number }>
   ) => void;
+  toggleStationExclusion: (stationId: string) => void;
   resetStationLevels: () => void;
   resetOnHand: () => void;
 }
@@ -42,7 +46,7 @@ const UserStateContext = createContext<UserStateContextValue | null>(null);
 
 // Action types
 type Action =
-  | { type: 'HYDRATE'; onHand: OnHandByItemId; stationLevels: StationLevelByStationId }
+  | { type: 'HYDRATE'; onHand: OnHandByItemId; stationLevels: StationLevelByStationId; excludedStations: ExcludedStationIds }
   | { type: 'SET_ON_HAND'; itemId: string; quantity: number }
   | { type: 'ADJUST_ON_HAND'; itemId: string; delta: number }
   | { type: 'SET_STATION_LEVEL'; stationId: string; level: number; maxLevel: number }
@@ -52,12 +56,14 @@ type Action =
       maxLevel: number;
       itemsToConsume: Array<{ itemId: string; quantity: number }>;
     }
+  | { type: 'TOGGLE_STATION_EXCLUSION'; stationId: string }
   | { type: 'RESET_STATION_LEVELS' }
   | { type: 'RESET_ON_HAND' };
 
 interface State {
   onHandByItemId: OnHandByItemId;
   stationLevelByStationId: StationLevelByStationId;
+  excludedStationIds: ExcludedStationIds;
   isHydrated: boolean;
 }
 
@@ -67,6 +73,7 @@ function reducer(state: State, action: Action): State {
       return {
         onHandByItemId: action.onHand,
         stationLevelByStationId: action.stationLevels,
+        excludedStationIds: action.excludedStations,
         isHydrated: true,
       };
 
@@ -125,10 +132,25 @@ function reducer(state: State, action: Action): State {
       };
     }
 
+    case 'TOGGLE_STATION_EXCLUSION': {
+      const currentlyExcluded = state.excludedStationIds[action.stationId] ?? false;
+      const newExcluded = { ...state.excludedStationIds };
+      if (currentlyExcluded) {
+        delete newExcluded[action.stationId];
+      } else {
+        newExcluded[action.stationId] = true;
+      }
+      return {
+        ...state,
+        excludedStationIds: newExcluded,
+      };
+    }
+
     case 'RESET_STATION_LEVELS':
       return {
         ...state,
         stationLevelByStationId: {},
+        excludedStationIds: {},
       };
 
     case 'RESET_ON_HAND':
@@ -146,17 +168,20 @@ interface UserStateProviderProps {
   children: ReactNode;
   initialOnHand?: OnHandByItemId;
   initialStationLevels?: StationLevelByStationId;
+  initialExcludedStations?: ExcludedStationIds;
 }
 
 export function UserStateProvider({
   children,
   initialOnHand = {},
   initialStationLevels = {},
+  initialExcludedStations = {},
 }: UserStateProviderProps) {
   const [state, dispatch] = useReducer(reducer, {
     onHandByItemId: initialOnHand,
     stationLevelByStationId: initialStationLevels,
-    isHydrated: Object.keys(initialOnHand).length > 0 || Object.keys(initialStationLevels).length > 0,
+    excludedStationIds: initialExcludedStations,
+    isHydrated: Object.keys(initialOnHand).length > 0 || Object.keys(initialStationLevels).length > 0 || Object.keys(initialExcludedStations).length > 0,
   });
 
   // Set up visibility flush on mount
@@ -208,9 +233,16 @@ export function UserStateProvider({
     [state.stationLevelByStationId, state.onHandByItemId]
   );
 
+  const toggleStationExclusion = useCallback((stationId: string) => {
+    const currentlyExcluded = state.excludedStationIds[stationId] ?? false;
+    dispatch({ type: 'TOGGLE_STATION_EXCLUSION', stationId });
+    saveExcludedStation(stationId, !currentlyExcluded);
+  }, [state.excludedStationIds]);
+
   const resetStationLevels = useCallback(() => {
     dispatch({ type: 'RESET_STATION_LEVELS' });
     clearStationLevels();
+    clearExcludedStations();
   }, []);
 
   const resetOnHand = useCallback(() => {
@@ -223,11 +255,13 @@ export function UserStateProvider({
       value={{
         onHandByItemId: state.onHandByItemId,
         stationLevelByStationId: state.stationLevelByStationId,
+        excludedStationIds: state.excludedStationIds,
         isHydrated: state.isHydrated,
         setOnHand,
         adjustOnHand,
         setStationLevel,
         upgradeStation,
+        toggleStationExclusion,
         resetStationLevels,
         resetOnHand,
       }}

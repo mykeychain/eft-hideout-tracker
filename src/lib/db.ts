@@ -4,14 +4,15 @@
  */
 
 import { openDB, type IDBPDatabase } from 'idb';
-import type { OnHandByItemId, StationLevelByStationId, UserState } from '@/types';
+import type { OnHandByItemId, StationLevelByStationId, ExcludedStationIds, UserState } from '@/types';
 
 const DB_NAME = 'tarkov-hideout-tracker';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 // Store names
 const STORE_ON_HAND = 'onHand';
 const STORE_STATION_LEVELS = 'stationLevels';
+const STORE_EXCLUDED_STATIONS = 'excludedStations';
 
 type HideoutDB = IDBPDatabase<{
   [STORE_ON_HAND]: {
@@ -21,6 +22,10 @@ type HideoutDB = IDBPDatabase<{
   [STORE_STATION_LEVELS]: {
     key: string;
     value: number;
+  };
+  [STORE_EXCLUDED_STATIONS]: {
+    key: string;
+    value: boolean;
   };
 }>;
 
@@ -34,6 +39,7 @@ function getDB(): Promise<HideoutDB> {
     dbPromise = openDB<{
       [STORE_ON_HAND]: { key: string; value: number };
       [STORE_STATION_LEVELS]: { key: string; value: number };
+      [STORE_EXCLUDED_STATIONS]: { key: string; value: boolean };
     }>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         // Create object stores if they don't exist
@@ -42,6 +48,9 @@ function getDB(): Promise<HideoutDB> {
         }
         if (!db.objectStoreNames.contains(STORE_STATION_LEVELS)) {
           db.createObjectStore(STORE_STATION_LEVELS);
+        }
+        if (!db.objectStoreNames.contains(STORE_EXCLUDED_STATIONS)) {
+          db.createObjectStore(STORE_EXCLUDED_STATIONS);
         }
       },
     });
@@ -92,15 +101,35 @@ export async function loadStationLevels(): Promise<StationLevelByStationId> {
 }
 
 /**
+ * Load all excluded station IDs from IndexedDB
+ */
+export async function loadExcludedStations(): Promise<ExcludedStationIds> {
+  const db = await getDB();
+  const tx = db.transaction(STORE_EXCLUDED_STATIONS, 'readonly');
+  const store = tx.objectStore(STORE_EXCLUDED_STATIONS);
+
+  const result: ExcludedStationIds = {};
+  let cursor = await store.openCursor();
+
+  while (cursor) {
+    result[cursor.key] = cursor.value;
+    cursor = await cursor.continue();
+  }
+
+  return result;
+}
+
+/**
  * Load complete user state from IndexedDB
  */
 export async function loadUserState(): Promise<UserState> {
-  const [onHandByItemId, stationLevelByStationId] = await Promise.all([
+  const [onHandByItemId, stationLevelByStationId, excludedStationIds] = await Promise.all([
     loadOnHandQuantities(),
     loadStationLevels(),
+    loadExcludedStations(),
   ]);
 
-  return { onHandByItemId, stationLevelByStationId };
+  return { onHandByItemId, stationLevelByStationId, excludedStationIds };
 }
 
 // ============================================
@@ -296,5 +325,32 @@ export async function clearStationLevels(): Promise<void> {
   const db = await getDB();
   const tx = db.transaction(STORE_STATION_LEVELS, 'readwrite');
   await tx.objectStore(STORE_STATION_LEVELS).clear();
+  await tx.done;
+}
+
+/**
+ * Save excluded station status (immediate, not debounced)
+ */
+export async function saveExcludedStation(stationId: string, excluded: boolean): Promise<void> {
+  const db = await getDB();
+  const tx = db.transaction(STORE_EXCLUDED_STATIONS, 'readwrite');
+  const store = tx.objectStore(STORE_EXCLUDED_STATIONS);
+
+  if (excluded) {
+    await store.put(true, stationId);
+  } else {
+    await store.delete(stationId);
+  }
+
+  await tx.done;
+}
+
+/**
+ * Clear all excluded stations from IndexedDB
+ */
+export async function clearExcludedStations(): Promise<void> {
+  const db = await getDB();
+  const tx = db.transaction(STORE_EXCLUDED_STATIONS, 'readwrite');
+  await tx.objectStore(STORE_EXCLUDED_STATIONS).clear();
   await tx.done;
 }

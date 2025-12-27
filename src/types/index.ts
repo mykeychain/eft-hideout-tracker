@@ -12,6 +12,7 @@ export type {
 export type {
   OnHandByItemId,
   StationLevelByStationId,
+  ExcludedStationIds,
   UserState,
   SortMode,
   UIPreferences,

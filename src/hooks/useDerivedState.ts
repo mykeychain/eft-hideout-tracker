@@ -15,7 +15,7 @@ import type { SortMode, StationCardViewModel } from '@/types';
  */
 export function useDerivedState(sortMode: SortMode = 'needed-desc'): DerivedState | null {
   const { snapshot } = useSnapshot();
-  const { onHandByItemId, stationLevelByStationId } = useUserState();
+  const { onHandByItemId, stationLevelByStationId, excludedStationIds } = useUserState();
 
   return useMemo(() => {
     if (!snapshot) return null;
@@ -24,9 +24,10 @@ export function useDerivedState(sortMode: SortMode = 'needed-desc'): DerivedStat
       snapshot,
       stationLevelByStationId,
       onHandByItemId,
+      excludedStationIds,
       sortMode
     );
-  }, [snapshot, stationLevelByStationId, onHandByItemId, sortMode]);
+  }, [snapshot, stationLevelByStationId, onHandByItemId, excludedStationIds, sortMode]);
 }
 
 /**
@@ -35,15 +36,16 @@ export function useDerivedState(sortMode: SortMode = 'needed-desc'): DerivedStat
  */
 export function useStationCard(stationId: string): StationCardViewModel | null {
   const { stationById } = useSnapshot();
-  const { onHandByItemId, stationLevelByStationId } = useUserState();
+  const { onHandByItemId, stationLevelByStationId, excludedStationIds } = useUserState();
 
   return useMemo(() => {
     const station = stationById[stationId];
     if (!station) return null;
 
     const currentLevel = stationLevelByStationId[stationId] ?? 0;
-    return buildStationCardViewModel(station, currentLevel, onHandByItemId);
-  }, [stationById, stationId, stationLevelByStationId, onHandByItemId]);
+    const isExcluded = excludedStationIds[stationId] ?? false;
+    return buildStationCardViewModel(station, currentLevel, onHandByItemId, isExcluded);
+  }, [stationById, stationId, stationLevelByStationId, onHandByItemId, excludedStationIds]);
 }
 
 /**

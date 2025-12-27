@@ -26,6 +26,7 @@ export interface StationCardViewModel {
   nextLevel: number | null;
   requirements: StationRequirementViewModel[];
   isReadyToUpgrade: boolean;
+  isExcluded: boolean;
 }
 
 /** Item row for Items tab (shopping list) */

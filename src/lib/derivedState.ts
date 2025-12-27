@@ -9,6 +9,7 @@ import type {
   HideoutLevel,
   OnHandByItemId,
   StationLevelByStationId,
+  ExcludedStationIds,
   StationCardViewModel,
   StationRequirementViewModel,
   ItemRowViewModel,
@@ -51,7 +52,8 @@ export function getNextLevel(
 export function buildStationCardViewModel(
   station: HideoutStation,
   currentLevel: number,
-  onHandByItemId: OnHandByItemId
+  onHandByItemId: OnHandByItemId,
+  isExcluded: boolean = false
 ): StationCardViewModel {
   const maxLevel = Math.max(0, ...station.levels.map((l) => l.level));
   const nextLevel = getNextLevel(station, currentLevel);
@@ -102,6 +104,7 @@ export function buildStationCardViewModel(
     nextLevel: nextLevel?.level ?? null,
     requirements,
     isReadyToUpgrade,
+    isExcluded,
   };
 }
 
@@ -111,11 +114,13 @@ export function buildStationCardViewModel(
 export function buildAllStationCards(
   snapshot: HideoutSnapshot,
   stationLevelByStationId: StationLevelByStationId,
-  onHandByItemId: OnHandByItemId
+  onHandByItemId: OnHandByItemId,
+  excludedStationIds: ExcludedStationIds = {}
 ): StationCardViewModel[] {
   const cards = snapshot.hideoutStations.map((station) => {
     const currentLevel = stationLevelByStationId[station.id] ?? 0;
-    return buildStationCardViewModel(station, currentLevel, onHandByItemId);
+    const isExcluded = excludedStationIds[station.id] ?? false;
+    return buildStationCardViewModel(station, currentLevel, onHandByItemId, isExcluded);
   });
 
   // Sort alphabetically by station name
@@ -139,14 +144,19 @@ interface NeededItem {
 /**
  * Aggregate item requirements across all stations' next upgrades
  * Excludes Money category items (they're not tracked in Items tab)
+ * Excludes stations that the user has marked as excluded
  */
 export function aggregateNeededNow(
   snapshot: HideoutSnapshot,
-  stationLevelByStationId: StationLevelByStationId
+  stationLevelByStationId: StationLevelByStationId,
+  excludedStationIds: ExcludedStationIds = {}
 ): Map<string, NeededItem> {
   const neededByItemId = new Map<string, NeededItem>();
 
   for (const station of snapshot.hideoutStations) {
+    // Skip excluded stations
+    if (excludedStationIds[station.id]) continue;
+
     const currentLevel = stationLevelByStationId[station.id] ?? 0;
     const nextLevel = getNextLevel(station, currentLevel);
 
@@ -308,17 +318,19 @@ export function computeDerivedState(
   snapshot: HideoutSnapshot,
   stationLevelByStationId: StationLevelByStationId,
   onHandByItemId: OnHandByItemId,
+  excludedStationIds: ExcludedStationIds = {},
   sortMode: SortMode = 'needed-desc'
 ): DerivedState {
   // Build station cards
   const stationCards = buildAllStationCards(
     snapshot,
     stationLevelByStationId,
-    onHandByItemId
+    onHandByItemId,
+    excludedStationIds
   );
 
-  // Aggregate needed items
-  const neededByItemId = aggregateNeededNow(snapshot, stationLevelByStationId);
+  // Aggregate needed items (excludes excluded stations)
+  const neededByItemId = aggregateNeededNow(snapshot, stationLevelByStationId, excludedStationIds);
 
   // Build item row view models
   const rawItems = buildItemRowViewModels(neededByItemId, onHandByItemId);

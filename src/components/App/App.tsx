@@ -35,7 +35,7 @@ export function App() {
         loadUserState().catch((err) => {
           // IndexedDB failure is non-fatal, start with empty state
           console.warn('Failed to load user state from IndexedDB:', err);
-          return { onHandByItemId: {}, stationLevelByStationId: {} };
+          return { onHandByItemId: {}, stationLevelByStationId: {}, excludedStationIds: {} };
         }),
       ]);
 
@@ -95,6 +95,7 @@ export function App() {
       <UserStateProvider
         initialOnHand={userState?.onHandByItemId ?? {}}
         initialStationLevels={userState?.stationLevelByStationId ?? {}}
+        initialExcludedStations={userState?.excludedStationIds ?? {}}
       >
         <AppShell
           hideoutContent={<HideoutTab />}
