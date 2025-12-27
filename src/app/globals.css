@@ -46,6 +46,16 @@
   /* Typography */
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
+  /* Font sizes - scaled up from defaults */
+  --font-size-xs: 0.8125rem;    /* 13px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-md: 1.0625rem;    /* 17px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.375rem;    /* 22px */
+  --font-size-3xl: 1.625rem;    /* 26px */
+
   /* Transitions */
   --transition-fast: 0.1s ease;
   --transition-normal: 0.15s ease;
@@ -65,6 +75,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
+  font-size: var(--font-size-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;

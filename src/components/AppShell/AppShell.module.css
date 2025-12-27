@@ -20,7 +20,7 @@
 }
 
 .title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   margin-bottom: var(--spacing-md);
   text-align: center;
@@ -38,7 +38,7 @@
   background: var(--background-secondary);
   border: 1px solid var(--border);
   color: var(--foreground-muted);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-md);
   font-weight: 500;
   transition: all var(--transition-normal);
 }
@@ -80,13 +80,13 @@
   }
 
   .title {
-    font-size: 1.125rem;
+    font-size: var(--font-size-xl);
     margin-bottom: var(--spacing-sm);
   }
 
   .tab {
     padding: var(--spacing-sm);
-    font-size: 0.875rem;
+    font-size: var(--font-size-base);
   }
 
   .content {

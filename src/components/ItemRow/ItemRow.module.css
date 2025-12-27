@@ -43,7 +43,7 @@
 }
 
 .name {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-md);
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -85,7 +85,7 @@
 }
 
 .progressText {
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   color: var(--foreground-muted);
   min-width: 4em;
@@ -112,7 +112,7 @@
   background: var(--background-tertiary);
   border: 1px solid var(--border);
   color: var(--foreground);
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;

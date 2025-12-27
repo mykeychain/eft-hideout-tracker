@@ -25,13 +25,13 @@
 }
 
 .loadingText {
-  font-size: 1.125rem;
+  font-size: var(--font-size-xl);
   font-weight: 500;
   color: var(--foreground);
 }
 
 .loadingHint {
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   color: var(--foreground-muted);
 }
 
@@ -57,12 +57,12 @@
   border: 2px solid var(--error);
   border-radius: 50%;
   color: var(--error);
-  font-size: 1.5rem;
+  font-size: var(--font-size-3xl);
   font-weight: 700;
 }
 
 .errorTitle {
-  font-size: 1.25rem;
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   color: var(--foreground);
 }
@@ -79,7 +79,7 @@
   background: var(--accent);
   border: none;
   color: white;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-md);
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-normal);

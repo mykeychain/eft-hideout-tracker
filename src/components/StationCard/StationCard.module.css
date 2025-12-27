@@ -51,7 +51,7 @@
 
 .expandIcon {
   width: 1em;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--foreground-muted);
   flex-shrink: 0;
   text-align: center;
@@ -89,7 +89,7 @@
 }
 
 .readyBadge {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--success);
   background: rgba(34, 197, 94, 0.2);
@@ -114,7 +114,7 @@
   background: var(--background-tertiary);
   border: 1px solid var(--border);
   color: var(--foreground);
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -138,7 +138,7 @@
   background: transparent;
   border: 1px solid var(--error, #ef4444);
   color: var(--error, #ef4444);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -155,7 +155,7 @@
   background: transparent;
   border: 1px solid var(--success);
   color: var(--success);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -168,7 +168,7 @@
 }
 
 .levelBadge {
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--foreground);
   background: var(--background-tertiary);
@@ -177,9 +177,9 @@
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   min-width: 7em;
-  height: 28px;
+  height: 32px;
   text-align: center;
-  line-height: 23px;
+  line-height: 27px;
 }
 
 .levelBadge.notBuilt {
@@ -232,7 +232,7 @@
 
 .itemName {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -262,7 +262,7 @@
   background: var(--background-secondary);
   border: 1px solid var(--border);
   color: var(--foreground);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -281,7 +281,7 @@
 .quantity {
   min-width: 50px;
   text-align: center;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--foreground-muted);
 }
@@ -295,7 +295,7 @@
 }
 
 .moneyAmount {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--foreground-muted);
   text-align: right;
@@ -309,7 +309,7 @@
   background: var(--success);
   border: none;
   color: white;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-md);
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s ease;
@@ -330,7 +330,7 @@
   }
 
   .name {
-    font-size: 0.9375rem;
+    font-size: var(--font-size-md);
   }
 
   .levelBtn {
