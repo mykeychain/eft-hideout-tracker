@@ -168,7 +168,7 @@
 }
 
 .levelBadge {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--foreground);
   background: var(--background-tertiary);
@@ -250,7 +250,7 @@
 .quantityControl {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   flex-shrink: 0;
 }
 
@@ -263,7 +263,7 @@
   background: var(--background-secondary);
   border: 1px solid var(--border);
   color: var(--foreground);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -282,7 +282,7 @@
 .quantity {
   min-width: 50px;
   text-align: center;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: 500;
   color: var(--foreground-muted);
 }
@@ -296,7 +296,7 @@
 }
 
 .moneyAmount {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: 500;
   color: var(--foreground-muted);
   text-align: right;
