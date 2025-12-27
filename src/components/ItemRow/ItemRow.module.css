@@ -1,16 +1,29 @@
-.row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+.container {
   background: var(--background-secondary);
   border: 1px solid var(--border);
   transition: all 0.15s ease;
 }
 
-.row.complete {
+.container.complete {
   background: var(--success-bg);
   border-color: var(--success);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: var(--background-tertiary);
+}
+
+.container.complete .row:hover {
+  background: rgba(34, 197, 94, 0.15);
 }
 
 .icon {
@@ -68,6 +81,7 @@
   flex: 1;
   height: 6px;
   background: var(--background-tertiary);
+  border: 1px solid var(--border);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -92,8 +106,59 @@
   text-align: right;
 }
 
-.row.complete .progressText {
+.container.complete .progressText {
   color: var(--success);
+}
+
+/* Expanded content */
+.expandedContent {
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+
+.stationList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.stationSource {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--background);
+  transition: background 0.15s ease;
+}
+
+.stationIcon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  background: var(--background-tertiary);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.stationName {
+  flex: 1;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+}
+
+.stationLevel {
+  font-size: var(--font-size-sm);
+  color: var(--foreground-muted);
+  flex-shrink: 0;
+}
+
+.stationQty {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--foreground);
+  min-width: 3em;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .controls {

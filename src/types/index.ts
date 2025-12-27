@@ -22,6 +22,7 @@ export type {
 export type {
   StationRequirementViewModel,
   StationCardViewModel,
+  ItemStationSource,
   ItemRowViewModel,
   ItemCategoryGroup,
 } from './viewModels';

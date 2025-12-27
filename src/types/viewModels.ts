@@ -29,6 +29,16 @@ export interface StationCardViewModel {
   isExcluded: boolean;
 }
 
+/** Station source for an item - which station needs it and how much */
+export interface ItemStationSource {
+  stationId: string;
+  stationName: string;
+  imageLink: string;
+  currentLevel: number;
+  targetLevel: number;
+  quantity: number;
+}
+
 /** Item row for Items tab (shopping list) */
 export interface ItemRowViewModel {
   itemId: string;
@@ -41,6 +51,7 @@ export interface ItemRowViewModel {
   onHand: number;
   progressPct: number;
   isComplete: boolean;
+  stationSources: ItemStationSource[];
 }
 
 /** Grouped items for category view */

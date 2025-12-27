@@ -12,6 +12,7 @@ import type {
   ExcludedStationIds,
   StationCardViewModel,
   StationRequirementViewModel,
+  ItemStationSource,
   ItemRowViewModel,
   ItemCategoryGroup,
   SortMode,
@@ -139,6 +140,7 @@ interface NeededItem {
   categoryId: string;
   categoryName: string;
   neededTotal: number;
+  stationSources: ItemStationSource[];
 }
 
 /**
@@ -168,10 +170,20 @@ export function aggregateNeededNow(
         continue;
       }
 
+      const stationSource: ItemStationSource = {
+        stationId: station.id,
+        stationName: station.name,
+        imageLink: station.imageLink,
+        currentLevel,
+        targetLevel: nextLevel.level,
+        quantity: req.quantity,
+      };
+
       const existing = neededByItemId.get(req.item.id);
 
       if (existing) {
         existing.neededTotal += req.quantity;
+        existing.stationSources.push(stationSource);
       } else {
         neededByItemId.set(req.item.id, {
           itemId: req.item.id,
@@ -181,6 +193,7 @@ export function aggregateNeededNow(
           categoryId: req.item.category.id,
           categoryName: req.item.category.name,
           neededTotal: req.quantity,
+          stationSources: [stationSource],
         });
       }
     }
@@ -208,6 +221,11 @@ export function buildItemRowViewModels(
       ? Math.min(100, Math.round((onHand / needed.neededTotal) * 100))
       : 100;
 
+    // Sort station sources alphabetically by station name
+    const sortedSources = [...needed.stationSources].sort((a, b) =>
+      a.stationName.localeCompare(b.stationName)
+    );
+
     items.push({
       itemId: needed.itemId,
       name: needed.name,
@@ -219,6 +237,7 @@ export function buildItemRowViewModels(
       onHand,
       progressPct,
       isComplete: onHand >= needed.neededTotal,
+      stationSources: sortedSources,
     });
   }
 

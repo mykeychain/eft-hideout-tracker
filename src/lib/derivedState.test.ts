@@ -254,6 +254,14 @@ describe('buildItemRowViewModels', () => {
         categoryId: 'cat-Tools',
         categoryName: 'Tools',
         neededTotal: 10,
+        stationSources: [{
+          stationId: 'station-1',
+          stationName: 'Workbench',
+          imageLink: 'https://example.com/workbench.png',
+          currentLevel: 0,
+          targetLevel: 1,
+          quantity: 10,
+        }],
       }],
     ]);
     const onHand = { 'item-1': 5 };
@@ -263,6 +271,7 @@ describe('buildItemRowViewModels', () => {
     expect(result).toHaveLength(1);
     expect(result[0].progressPct).toBe(50);
     expect(result[0].isComplete).toBe(false);
+    expect(result[0].stationSources).toHaveLength(1);
   });
 
   it('caps progress at 100%', () => {
@@ -275,6 +284,14 @@ describe('buildItemRowViewModels', () => {
         categoryId: 'cat-Tools',
         categoryName: 'Tools',
         neededTotal: 5,
+        stationSources: [{
+          stationId: 'station-1',
+          stationName: 'Workbench',
+          imageLink: 'https://example.com/workbench.png',
+          currentLevel: 0,
+          targetLevel: 1,
+          quantity: 5,
+        }],
       }],
     ]);
     const onHand = { 'item-1': 10 };
