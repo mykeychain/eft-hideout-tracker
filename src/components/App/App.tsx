@@ -6,6 +6,7 @@ import { UserStateProvider } from '@/contexts/UserStateContext';
 import { AppShell } from '@/components/AppShell';
 import { HideoutTab } from '@/components/HideoutTab';
 import { ItemsTab } from '@/components/ItemsTab';
+import { ToastProvider } from '@/components/Toast';
 import { loadUserState } from '@/lib/db';
 import { isSnapshotError, type HideoutSnapshot, type UserState } from '@/types';
 import styles from './App.module.css';
@@ -97,10 +98,12 @@ export function App() {
         initialStationLevels={userState?.stationLevelByStationId ?? {}}
         initialExcludedStations={userState?.excludedStationIds ?? {}}
       >
-        <AppShell
-          hideoutContent={<HideoutTab />}
-          itemsContent={<ItemsTab />}
-        />
+        <ToastProvider>
+          <AppShell
+            hideoutContent={<HideoutTab />}
+            itemsContent={<ItemsTab />}
+          />
+        </ToastProvider>
       </UserStateProvider>
     </SnapshotProvider>
   );
